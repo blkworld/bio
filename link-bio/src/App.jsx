@@ -3,7 +3,7 @@ import { FaInstagram, FaTiktok } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
 
 const profile = {
-  name: "Vincerenism",
+  name: "Vinc Trades",
   eyebrow: "",
   bio: "",
   avatar: "/profile.jpg",
