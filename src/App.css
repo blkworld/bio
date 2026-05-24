@@ -184,11 +184,15 @@ footer {
 }
 
 .galleryGrid {
-  width: min(100%, 1440px);
+  width: 100%;
   margin: 0 auto;
-  columns: 5 180px;
+  columns: 2 140px;
   column-gap: 8px;
   line-height: 0;
+}
+
+.galleryItem {
+  margin: 0 0 8px;
 }
 
 .galleryItem {
