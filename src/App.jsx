@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import "./App.css";
-import { FaInstagram, FaTiktok} from "react-icons/fa6";
-import { MdEmail } from "react-icons/md";
+import { FaInstagram, FaTiktok } from "react-icons/fa6";
+import { SiNotion } from "react-icons/si";
 
 const SHOW_GALLERY = false;
 
 const profile = {
   name: "Vinc Trades",
-  slogan: "—Trading is the hardest way to make easy money.",
+  slogan: "— Trading is the hardest way to make easy money.",
   avatar: "/profile.jpg",
   header: "/header.gif",
 };
@@ -22,6 +22,11 @@ const links = [
     title: "TikTok",
     href: "https://tiktok.com/@vincerenism",
     Icon: FaTiktok,
+  },
+  {
+    title: "Notion",
+    href: "https://canary-salsa-09e.notion.site/journal-36aaec30450d80c193c7c794688ca780",
+    Icon: SiNotion,
   },
 ];
 
