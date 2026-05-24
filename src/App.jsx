@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import "./App.css";
-import { FaInstagram, FaTiktok } from "react-icons/fa6";
+import { FaInstagram, FaTiktok} from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
 
 const SHOW_GALLERY = true;
@@ -22,11 +22,6 @@ const links = [
     title: "TikTok",
     href: "https://tiktok.com/@vincerenism",
     Icon: FaTiktok,
-  },
-  {
-    title: "Email",
-    href: "mailto:hello@example.com",
-    Icon: MdEmail,
   },
 ];
 
