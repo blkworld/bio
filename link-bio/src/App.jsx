@@ -4,6 +4,7 @@ import { MdEmail } from "react-icons/md";
 
 const profile = {
   name: "Vinc Trades",
+  slogan: "Follow my other socials and stay connected.",
   avatar: "/profile.jpg",
   header: "/header.gif",
 };
@@ -38,6 +39,7 @@ export default function App() {
           <header className="profile">
             <img className="avatar" src={profile.avatar} alt={profile.name} />
             <h1>{profile.name}</h1>
+            <p className="slogan">{profile.slogan}</p>
           </header>
 
           <nav className="links" aria-label="Social links">
