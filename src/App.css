@@ -186,21 +186,21 @@ footer {
 .galleryGrid {
   width: min(100%, 1440px);
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 8px;
-  align-items: start;
+  columns: 5 180px;
+  column-gap: 8px;
+  line-height: 0;
 }
 
 .galleryItem {
   width: 100%;
   display: block;
-  margin: 0;
+  margin: 0 0 8px;
   padding: 0;
   border: 0;
   border-radius: 4px;
   background: transparent;
   cursor: zoom-in;
+  break-inside: avoid;
   overflow: hidden;
 }
 
@@ -346,21 +346,29 @@ footer {
   .galleryGrid {
     width: 100%;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-    align-items: start;
+    columns: 2;
+    column-gap: 8px;
+    line-height: 0;
   }
 
   .galleryItem {
     width: 100%;
-    margin: 0;
+    display: block;
+    margin: 0 0 8px;
+    padding: 0;
+    border: 0;
     border-radius: 3px;
+    background: transparent;
+    cursor: zoom-in;
+    break-inside: avoid;
+    overflow: hidden;
   }
 
   .galleryItem img {
     width: 100%;
+    display: block;
     border-radius: 3px;
+    background: #111;
   }
 
   .backHomeButton {
