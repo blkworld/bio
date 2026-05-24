@@ -1,387 +1,210 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+import { useEffect, useMemo, useState } from "react";
+import "./App.css";
+import { FaInstagram, FaTiktok } from "react-icons/fa6";
+import { MdEmail } from "react-icons/md";
 
-:root {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
-  color: #f5f5f0;
-  background: #000;
+const SHOW_GALLERY = true;
+
+const profile = {
+  name: "Vinc Trades",
+  slogan: "Follow my other socials and stay connected.",
+  avatar: "/profile.jpg",
+  header: "/header.gif",
+};
+
+const links = [
+  {
+    title: "Instagram",
+    href: "https://instagram.com/vincerenism",
+    Icon: FaInstagram,
+  },
+  {
+    title: "TikTok",
+    href: "https://tiktok.com/@vincerenism",
+    Icon: FaTiktok,
+  },
+  {
+    title: "Email",
+    href: "mailto:hello@example.com",
+    Icon: MdEmail,
+  },
+];
+
+const galleryImages = Object.entries(
+  import.meta.glob("./gallery/*.{jpg,jpeg,png,webp,gif}", {
+    eager: true,
+    query: "?url",
+    import: "default",
+  })
+)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, src]) => src);
+
+function useGalleryColumnCount() {
+  const getColumnCount = () => {
+    if (window.innerWidth <= 520) return 2;
+    if (window.innerWidth <= 900) return 3;
+    if (window.innerWidth <= 1200) return 4;
+    return 5;
+  };
+
+  const [columnCount, setColumnCount] = useState(getColumnCount);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setColumnCount(getColumnCount());
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  return columnCount;
 }
 
-.page {
-  width: 100%;
-  height: 100dvh;
-  display: grid;
-  place-items: center;
-  padding: 16px;
-  background: #000;
-  overflow: hidden;
+function HomePage() {
+  return (
+    <main className="page">
+      <div className="homeStack">
+        <section className="card">
+          <div className="cover">
+            <img src={profile.header} alt="" />
+          </div>
+
+          <div className="content">
+            <header className="profile">
+              <img className="avatar" src={profile.avatar} alt={profile.name} />
+              <h1>{profile.name}</h1>
+              <p className="slogan">{profile.slogan}</p>
+            </header>
+
+            <nav className="links" aria-label="Social links">
+              {links.map((link) => {
+                const Icon = link.Icon;
+
+                return (
+                  <a
+                    className="link"
+                    href={link.href}
+                    target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+                    rel={link.href.startsWith("mailto:") ? undefined : "noreferrer"}
+                    key={link.title}
+                  >
+                    <span className="tag">
+                      <Icon />
+                    </span>
+
+                    <span className="title">{link.title}</span>
+
+                    <span className="arrow">↗</span>
+                  </a>
+                );
+              })}
+            </nav>
+
+            <footer>VINCERE AUT MORI</footer>
+          </div>
+        </section>
+
+        {SHOW_GALLERY && (
+          <a className="galleryTextLink" href="#gallery">
+            Gallery
+          </a>
+        )}
+      </div>
+    </main>
+  );
 }
 
-.homeStack {
-  width: min(100%, 500px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+function GalleryPage() {
+  const [selectedImage, setSelectedImage] = useState(null);
+  const columnCount = useGalleryColumnCount();
+
+  const galleryColumns = useMemo(() => {
+    const columns = Array.from({ length: columnCount }, () => []);
+
+    galleryImages.forEach((src, index) => {
+      columns[index % columnCount].push(src);
+    });
+
+    return columns;
+  }, [columnCount]);
+
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setSelectedImage(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
+  return (
+    <main className="galleryPage">
+      <section
+        className="galleryGrid"
+        style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }}
+      >
+        {galleryColumns.map((column, columnIndex) => (
+          <div className="galleryColumn" key={columnIndex}>
+            {column.map((src) => (
+              <button
+                className="galleryItem"
+                type="button"
+                onClick={() => setSelectedImage(src)}
+                key={src}
+              >
+                <img src={src} alt="" />
+              </button>
+            ))}
+          </div>
+        ))}
+      </section>
+
+      <a className="backHomeButton" href="#">
+        Back to Home
+      </a>
+
+      {selectedImage && (
+        <button
+          className="zoomOverlay"
+          type="button"
+          onClick={() => setSelectedImage(null)}
+          aria-label="Close image preview"
+        >
+          <img src={selectedImage} alt="" />
+        </button>
+      )}
+    </main>
+  );
 }
 
-.card {
-  width: min(100%, 500px);
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 28px;
-  background: #0b0b0b;
-  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.75);
-}
+export default function App() {
+  const [page, setPage] = useState(window.location.hash);
 
-.cover {
-  width: 100%;
-  height: 175px;
-  overflow: hidden;
-  background: #111;
-}
+  useEffect(() => {
+    const handleHashChange = () => {
+      setPage(window.location.hash);
+    };
 
-.cover img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-}
+    window.addEventListener("hashchange", handleHashChange);
 
-.content {
-  padding: 0 30px 30px;
-}
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
 
-.profile {
-  margin-top: -48px;
-  margin-bottom: 48px;
-}
-
-.avatar {
-  width: 96px;
-  height: 96px;
-  display: block;
-  margin-bottom: 16px;
-  border-radius: 24px;
-  object-fit: cover;
-  object-position: center;
-  border: none;
-  outline: none;
-  background: transparent;
-  box-shadow: none;
-}
-
-h1 {
-  margin: 0;
-  color: #f5f5f0;
-  font-size: 30px;
-  line-height: 1;
-  letter-spacing: -0.06em;
-  font-weight: 700;
-}
-
-.slogan {
-  margin: 8px 0 0;
-  color: rgba(245, 245, 240, 0.58);
-  font-size: 14px;
-  line-height: 1.45;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-}
-
-.links {
-  display: grid;
-  gap: 10px;
-}
-
-.link {
-  display: grid;
-  grid-template-columns: 44px 1fr auto;
-  align-items: center;
-  gap: 14px;
-  padding: 14px;
-  color: #f5f5f0;
-  text-decoration: none;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.055);
-  transition:
-    transform 180ms ease,
-    background 180ms ease,
-    border-color 180ms ease;
-}
-
-.link:hover {
-  transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.095);
-}
-
-.tag {
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-}
-
-.tag svg {
-  width: 18px;
-  height: 18px;
-}
-
-.title {
-  display: block;
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-}
-
-.arrow {
-  color: rgba(245, 245, 240, 0.42);
-  font-size: 18px;
-}
-
-footer {
-  margin-top: 24px;
-  padding-top: 18px;
-  display: flex;
-  justify-content: flex-end;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(245, 245, 240, 0.42);
-  font-size: 10px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-}
-
-.galleryTextLink {
-  margin-top: 18px;
-  color: rgba(245, 245, 240, 0.52);
-  font-size: 13px;
-  font-weight: 400;
-  text-decoration: none;
-  letter-spacing: -0.01em;
-  transition:
-    color 180ms ease,
-    transform 180ms ease;
-}
-
-.galleryTextLink:hover {
-  color: #f5f5f0;
-  transform: translateY(-1px);
-}
-
-.galleryPage {
-  width: 100%;
-  height: 100dvh;
-  padding: 8px 8px 60px;
-  background: #000;
-  color: #f5f5f0;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-.galleryGrid {
-  width: min(100%, 1440px);
-  margin: 0 auto;
-  columns: 5 180px;
-  column-gap: 8px;
-  line-height: 0;
-}
-
-.galleryItem {
-  width: 100%;
-  display: block;
-  margin: 0 0 8px;
-  padding: 0;
-  border: 0;
-  border-radius: 4px;
-  background: transparent;
-  cursor: zoom-in;
-  break-inside: avoid;
-  overflow: hidden;
-}
-
-.galleryItem img {
-  width: 100%;
-  display: block;
-  border-radius: 4px;
-  background: #111;
-}
-
-.backHomeButton {
-  width: fit-content;
-  display: block;
-  margin: 34px auto 0;
-  padding: 11px 16px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.09);
-  color: #f5f5f0;
-  font-size: 13px;
-  font-weight: 400;
-  text-decoration: none;
-}
-
-.zoomOverlay {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  display: grid;
-  place-items: center;
-  padding: 18px;
-  border: 0;
-  background: rgba(0, 0, 0, 0.88);
-  cursor: zoom-out;
-}
-
-.zoomOverlay img {
-  max-width: min(100%, 1100px);
-  max-height: 88dvh;
-  display: block;
-  border-radius: 6px;
-  object-fit: contain;
-}
-
-@media (max-width: 520px) {
-  .page {
-    width: 100%;
-    height: 100dvh;
-    padding: 12px;
-    background: #000;
-    overflow: hidden;
+  if (page === "#gallery" && SHOW_GALLERY) {
+    return <GalleryPage />;
   }
 
-  .homeStack {
-    width: min(100%, 360px);
-  }
-
-  .card {
-    width: min(100%, 360px);
-    border-radius: 24px;
-  }
-
-  .cover {
-    height: 126px;
-  }
-
-  .content {
-    padding: 0 22px 22px;
-  }
-
-  .profile {
-    margin-top: -44px;
-    margin-bottom: 42px;
-  }
-
-  .avatar {
-    width: 96px;
-    height: 96px;
-    margin-bottom: 16px;
-    border-radius: 24px;
-  }
-
-  h1 {
-    font-size: 27px;
-    line-height: 1;
-    letter-spacing: -0.055em;
-    font-weight: 700;
-  }
-
-  .slogan {
-    margin-top: 7px;
-    font-size: 12px;
-    line-height: 1.45;
-    font-weight: 400;
-  }
-
-  .links {
-    gap: 9px;
-  }
-
-  .link {
-    grid-template-columns: 38px 1fr auto;
-    gap: 11px;
-    padding: 11px;
-    border-radius: 15px;
-  }
-
-  .tag {
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-  }
-
-  .tag svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .title {
-    font-size: 13px;
-  }
-
-  footer {
-    margin-top: 18px;
-    padding-top: 14px;
-    font-size: 8px;
-    letter-spacing: 0.14em;
-  }
-
-  .galleryTextLink {
-    margin-top: 14px;
-    font-size: 12px;
-  }
-
-  .galleryPage {
-    width: 100%;
-    height: 100dvh;
-    padding: 8px 8px 54px;
-    background: #000;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-
-  .galleryGrid {
-    width: 100%;
-    margin: 0 auto;
-    columns: 2;
-    column-gap: 8px;
-    line-height: 0;
-  }
-
-  .galleryItem {
-    width: 100%;
-    display: block;
-    margin: 0 0 8px;
-    padding: 0;
-    border: 0;
-    border-radius: 3px;
-    background: transparent;
-    cursor: zoom-in;
-    break-inside: avoid;
-    overflow: hidden;
-  }
-
-  .galleryItem img {
-    width: 100%;
-    display: block;
-    border-radius: 3px;
-    background: #111;
-  }
-
-  .backHomeButton {
-    margin-top: 28px;
-    padding: 10px 14px;
-    font-size: 12px;
-  }
-
-  .zoomOverlay {
-    padding: 10px;
-  }
-
-  .zoomOverlay img {
-    max-height: 86dvh;
-  }
+  return <HomePage />;
 }
