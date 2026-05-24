@@ -3,11 +3,11 @@ import "./App.css";
 import { FaInstagram, FaTiktok} from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
 
-const SHOW_GALLERY = true;
+const SHOW_GALLERY = false;
 
 const profile = {
   name: "Vinc Trades",
-  slogan: "Follow my other socials and stay connected.",
+  slogan: "—Trading is the hardest way to make easy money.",
   avatar: "/profile.jpg",
   header: "/header.gif",
 };
