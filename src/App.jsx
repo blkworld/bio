@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./App.css";
 import { FaInstagram, FaTiktok } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
@@ -39,6 +39,31 @@ const galleryImages = Object.entries(
 )
   .sort(([a], [b]) => a.localeCompare(b))
   .map(([, src]) => src);
+
+function useGalleryColumnCount() {
+  const getColumnCount = () => {
+    if (window.innerWidth <= 520) return 2;
+    if (window.innerWidth <= 900) return 3;
+    if (window.innerWidth <= 1200) return 4;
+    return 5;
+  };
+
+  const [columnCount, setColumnCount] = useState(getColumnCount);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setColumnCount(getColumnCount());
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  return columnCount;
+}
 
 function HomePage() {
   return (
@@ -96,6 +121,17 @@ function HomePage() {
 
 function GalleryPage() {
   const [selectedImage, setSelectedImage] = useState(null);
+  const columnCount = useGalleryColumnCount();
+
+  const galleryColumns = useMemo(() => {
+    const columns = Array.from({ length: columnCount }, () => []);
+
+    galleryImages.forEach((src, index) => {
+      columns[index % columnCount].push(src);
+    });
+
+    return columns;
+  }, [columnCount]);
 
   useEffect(() => {
     const handleEscape = (event) => {
@@ -113,16 +149,23 @@ function GalleryPage() {
 
   return (
     <main className="galleryPage">
-      <section className="galleryGrid">
-        {galleryImages.map((src) => (
-          <button
-            className="galleryItem"
-            type="button"
-            onClick={() => setSelectedImage(src)}
-            key={src}
-          >
-            <img src={src} alt="" />
-          </button>
+      <section
+        className="galleryGrid"
+        style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }}
+      >
+        {galleryColumns.map((column, columnIndex) => (
+          <div className="galleryColumn" key={columnIndex}>
+            {column.map((src) => (
+              <button
+                className="galleryItem"
+                type="button"
+                onClick={() => setSelectedImage(src)}
+                key={src}
+              >
+                <img src={src} alt="" />
+              </button>
+            ))}
+          </div>
         ))}
       </section>
 
