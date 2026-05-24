@@ -22,7 +22,7 @@ const links = [
   },
   {
     title: "Email",
-    href: "mailto:hello@example.com",
+    href: "mailto:mailontrading@gmail.com",
     Icon: MdEmail,
   },
 ];
