@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap");
 
 :root {
   font-family: "JetBrains Mono", ui-monospace, monospace;
@@ -17,57 +17,60 @@
 }
 
 .card {
-  width: min(100%, 520px);
-  padding: 34px;
+  width: min(100%, 500px);
+  overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 28px;
-  background: rgba(255, 255, 255, 0.045);
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(24px);
+  background: #0b0b0b;
+  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.75);
 }
 
-.hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
+.cover {
+  width: 100%;
+  height: 175px;
+  overflow: hidden;
+  background: #111;
+}
+
+.cover img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.content {
+  padding: 0 30px 30px;
+}
+
+.profile {
+  margin-top: -48px;
   margin-bottom: 34px;
-  text-align: center;
 }
 
 .avatar {
-  width: 120px;
-  height: 120px;
+  width: 96px;
+  height: 96px;
   display: block;
-  border-radius: 30px;
+  margin-bottom: 16px;
+  border-radius: 24px;
   object-fit: cover;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.08);
+  object-position: center;
+  border: none;
+  outline: none;
+  background: transparent;
+  box-shadow: none;
 }
 
 h1 {
   margin: 0;
   color: #f5f5f0;
-  font-size: clamp(28px, 5vw, 42px);
-  line-height: 1.05;
-  letter-spacing: -0.04em;
-  text-align: center;
-  font-weight: 500;
-}
-
-.eyebrow,
-.handle,
-.bio {
-  text-align: center;
-}
-
-.bio {
-  margin: 14px 0 0;
-  max-width: 380px;
-  color: rgba(245, 245, 240, 0.62);
-  font-size: 13px;
-  line-height: 1.7;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  font-weight: 700;
 }
 
 .links {
@@ -113,25 +116,11 @@ h1 {
   height: 18px;
 }
 
-.copy {
-  min-width: 0;
-}
-
 .title {
   display: block;
   font-size: 14px;
   font-weight: 800;
   letter-spacing: -0.04em;
-}
-
-.desc {
-  display: block;
-  margin-top: 5px;
-  color: rgba(245, 245, 240, 0.5);
-  font-size: 11px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .arrow {
@@ -144,11 +133,10 @@ footer {
   padding-top: 18px;
   display: flex;
   justify-content: flex-end;
-  gap: 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   color: rgba(245, 245, 240, 0.42);
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 10px;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.18em;
 }
@@ -163,28 +151,37 @@ footer {
   }
 
   .card {
-    width: min(100%, 330px);
-    padding: 22px;
-    border-radius: 22px;
+    width: min(100%, 360px);
+    border-radius: 24px;
   }
 
-  .hero {
-    gap: 18px;
+  .cover {
+    height: 126px;
+  }
+
+  .content {
+    padding: 0 22px 22px;
+  }
+
+  .profile {
+    margin-top: -44px;
     margin-bottom: 28px;
   }
 
   .avatar {
-    width: 150px;
-    height: 150px;
-    border-radius: 38px;
+    width: 96px;
+    height: 96px;
+    margin-bottom: 16px;
+    border-radius: 24px;
   }
 
-  .hero h1,
   h1 {
-    font-size: 24px;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    font-weight: 500;
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", sans-serif;
+    font-size: 27px;
+    line-height: 1;
+    letter-spacing: -0.055em;
+    font-weight: 700;
   }
 
   .links {
@@ -214,8 +211,8 @@ footer {
   }
 
   footer {
-    margin-top: 16px;
-    padding-top: 13px;
+    margin-top: 18px;
+    padding-top: 14px;
     font-size: 8px;
     letter-spacing: 0.14em;
   }
