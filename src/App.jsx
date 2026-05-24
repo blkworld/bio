@@ -95,17 +95,51 @@ function HomePage() {
 }
 
 function GalleryPage() {
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setSelectedImage(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
   return (
     <main className="galleryPage">
-      <a className="closeGallery" href="#" aria-label="Back to home">
-        ×
-      </a>
-
       <section className="galleryGrid">
         {galleryImages.map((src) => (
-          <img src={src} alt="" key={src} />
+          <button
+            className="galleryItem"
+            type="button"
+            onClick={() => setSelectedImage(src)}
+            key={src}
+          >
+            <img src={src} alt="" />
+          </button>
         ))}
       </section>
+
+      <a className="backHomeButton" href="#">
+        Back to Home
+      </a>
+
+      {selectedImage && (
+        <button
+          className="zoomOverlay"
+          type="button"
+          onClick={() => setSelectedImage(null)}
+          aria-label="Close image preview"
+        >
+          <img src={selectedImage} alt="" />
+        </button>
+      )}
     </main>
   );
 }
