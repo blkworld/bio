@@ -252,92 +252,71 @@ footer {
 
 @media (max-width: 520px) {
   .page {
-    width: 100%;
-    height: 100dvh;
-    padding: 12px;
-    background: #000;
-    overflow: hidden;
+    padding: 16px;
   }
 
-  .homeStack {
-    width: min(100%, 360px);
+  .homeStack,
+  .card {
+    width: min(100%, 330px);
   }
 
   .card {
-    width: min(100%, 360px);
-    border-radius: 24px;
+    border-radius: 22px;
   }
 
   .cover {
-    height: 126px;
+    height: 112px;
   }
 
   .content {
-    padding: 0 22px 22px;
+    padding: 0 18px 18px;
   }
 
   .profile {
-    margin-top: -44px;
-    margin-bottom: 42px;
+    margin-top: -38px;
+    margin-bottom: 32px;
   }
 
   .avatar {
-    width: 96px;
-    height: 96px;
-    margin-bottom: 16px;
-    border-radius: 24px;
+    width: 84px;
+    height: 84px;
+    border-radius: 20px;
+    margin-bottom: 12px;
   }
 
   h1 {
-    font-size: 27px;
-    line-height: 1;
-    letter-spacing: -0.055em;
-    font-weight: 700;
+    font-size: 24px;
   }
 
   .slogan {
-    margin-top: 7px;
-    font-size: 12px;
-    line-height: 1.45;
-    font-weight: 400;
-  }
-
-  .links {
-    gap: 9px;
+    font-size: 11px;
   }
 
   .link {
-    grid-template-columns: 38px 1fr auto;
-    gap: 11px;
-    padding: 11px;
-    border-radius: 15px;
+    grid-template-columns: 34px 1fr auto;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 14px;
   }
 
   .tag {
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
+    width: 34px;
+    height: 34px;
   }
 
   .tag svg {
-    width: 16px;
-    height: 16px;
+    width: 15px;
+    height: 15px;
   }
 
   .title {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   footer {
-    margin-top: 18px;
-    padding-top: 14px;
+    margin-top: 16px;
+    padding-top: 12px;
     font-size: 8px;
-    letter-spacing: 0.14em;
-  }
-
-  .galleryTextLink {
-    margin-top: 14px;
-    font-size: 12px;
   }
 
   .galleryPage {
